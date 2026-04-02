@@ -19,6 +19,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/producto/:id" element={<ProductDetails />} />
         <Route path="/catalogo" element={<Catalog />} /> {/* 2. AGREGAMOS LA RUTA */}
+        <Route path="/hombre" element={<MensPage />} />
+<Route path="/mujer" element={<WomensPage />} />
       </Routes>
     </Router>
   );
