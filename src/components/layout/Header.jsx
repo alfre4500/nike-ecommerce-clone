@@ -4,22 +4,22 @@ import { ShoppingBag, Search, Menu } from 'lucide-react';
 import { useCartStore } from '../../store/useCartStore';
 
 export default function Header() {
-  // Extraemos también setIsSearchOpen
   const { cartItems, setIsCartOpen, setIsSearchOpen } = useCartStore();
 
   return (
     <header className="flex justify-between items-center px-6 md:px-8 py-5 bg-white border-b border-neutral-100 sticky top-0 z-40">
       <Link to="/" className="text-3xl font-black tracking-tighter">NIKE</Link>
       
-     <nav className="hidden md:flex gap-8 text-sm font-medium">
-        <Link to="/catalogo" className="hover:text-neutral-500 transition-colors">Nuevos</Link>
-        <Link to="/catalogo" className="hover:text-neutral-500 transition-colors">Hombre</Link>
-        <Link to="/catalogo" className="hover:text-neutral-500 transition-colors">Mujer</Link>
+      <nav className="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest">
+        {/* Usamos query params para filtrar "Nuevos" en el catálogo */}
+        <Link to="/catalogo?filter=Nuevos" className="hover:text-neutral-500 transition-colors">Nuevos</Link>
+        {/* Estos ahora llevan a sus propias Landing Pages */}
+        <Link to="/hombre" className="hover:text-neutral-500 transition-colors">Hombre</Link>
+        <Link to="/mujer" className="hover:text-neutral-500 transition-colors">Mujer</Link>
         <Link to="/catalogo" className="hover:text-neutral-500 transition-colors">Catálogo</Link>
       </nav>
 
       <div className="flex gap-5 items-center">
-        {/* Le damos función al botón de buscar */}
         <button 
           onClick={() => setIsSearchOpen(true)} 
           className="hover:text-neutral-500 transition-colors hidden md:block"

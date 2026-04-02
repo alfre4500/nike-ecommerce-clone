@@ -7,6 +7,8 @@ import SearchModal from './components/ui/SearchModal';
 import Home from './pages/Home';
 import ProductDetails from './pages/ProductDetails';
 import Catalog from './pages/Catalog';
+import MensPage from './pages/MensPage'; // Agregado
+import WomensPage from './pages/WomensPage'; // Agregado
 
 export default function App() {
   return (
@@ -18,9 +20,9 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/producto/:id" element={<ProductDetails />} />
-        <Route path="/catalogo" element={<Catalog />} /> {/* 2. AGREGAMOS LA RUTA */}
+        <Route path="/catalogo" element={<Catalog />} />
         <Route path="/hombre" element={<MensPage />} />
-<Route path="/mujer" element={<WomensPage />} />
+        <Route path="/mujer" element={<WomensPage />} />
       </Routes>
     </Router>
   );

@@ -125,7 +125,8 @@ export const products = [
     category: "Hombre", 
     price: 110, 
     image: "https://images.unsplash.com/photo-1600269452121-4f2416755c16?auto=format&fit=crop&w=1000&q=80",
-    description: "Siempre fresco. El AJ1 Low captura el espíritu del diseño original en un perfil bajo y elegante."
+    description: "Siempre fresco. El AJ1 Low captura el espíritu del diseño original en un perfil bajo y elegante.",
+    isNew: true
   },
   { 
     id: 17, 
@@ -133,7 +134,8 @@ export const products = [
     category: "Mujer", 
     price: 90, 
     image: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=1000&q=80",
-    description: "Flexibilidad y soporte para tus entrenamientos más intensos con un toque de color vibrante."
+    description: "Flexibilidad y soporte para tus entrenamientos más intensos con un toque de color vibrante.",
+    isNew: true
   },
   { 
     id: 18, 
@@ -141,7 +143,8 @@ export const products = [
     category: "Hombre", 
     price: 150, 
     image: "https://images.unsplash.com/photo-1512374382149-433a72b9a5a5?auto=format&fit=crop&w=1000&q=80",
-    description: "La unidad Air con carga de puntos ofrece una comodidad increíble inspirada en la música urbana."
+    description: "La unidad Air con carga de puntos ofrece una comodidad increíble inspirada en la música urbana.",
+    isNew: true
   },
   { 
     id: 19, 
@@ -149,7 +152,8 @@ export const products = [
     category: "Unisex", 
     price: 130, 
     image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1000&q=80",
-    description: "Rindiendo homenaje a su historia en la cultura del tenis, combina estilo clásico con un diseño moderno."
+    description: "Rindiendo homenaje a su historia en la cultura del tenis, combina estilo clásico con un diseño moderno.",
+    isNew: true
   },
   { 
     id: 20, 
@@ -157,6 +161,7 @@ export const products = [
     category: "Unisex", 
     price: 225, 
     image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=1000&q=80",
-    description: "Máximo estilo y amortiguación. Una silueta audaz que destaca en cualquier lugar."
+    description: "Máximo estilo y amortiguación. Una silueta audaz que destaca en cualquier lugar.",
+    isNew: true
   }
 ];
