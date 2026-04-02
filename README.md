@@ -26,4 +26,4 @@ Este proyecto está diseñado para funcionar como una aplicación nativa o "vent
 
 1. Clona este repositorio:
    ```bash
-   git clone [https://github.com/alfre4500/nike-ecommerce-clone.git](https://github.com/TU_USUARIO/nike-ecommerce-clone.git)
+   git clone [https://github.com/alfre4500/nike-ecommerce-clone.git](https://nike-ecommerce-clone-khaki.vercel.app/)
