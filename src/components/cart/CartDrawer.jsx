@@ -1,9 +1,16 @@
 import React from 'react';
-import { X, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, Trash2, ShoppingBag } from 'lucide-react'; // <--- AGREGAMOS ShoppingBag AQUÍ
 import { useCartStore } from '../../store/useCartStore';
 
 export default function CartDrawer() {
   const { cartItems, isCartOpen, setIsCartOpen, removeFromCart } = useCartStore();
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    setIsCartOpen(false);
+    navigate('/checkout');
+  };
 
   return (
     <>
@@ -15,11 +22,15 @@ export default function CartDrawer() {
         
         <div className="p-6 flex flex-col gap-6 h-[calc(100vh-200px)] overflow-y-auto">
           {cartItems.length === 0 ? (
-            <p className="text-neutral-400 text-center mt-10 font-light">No hay productos aún.</p>
+            <div className="flex flex-col items-center justify-center mt-20 opacity-40">
+               {/* Ahora que está importado, ya no dará error */}
+               <ShoppingBag size={48} className="mb-4" /> 
+               <p className="text-center font-light">No hay productos aún.</p>
+            </div>
           ) : (
             cartItems.map((item, index) => (
               <div key={index} className="flex gap-4 group">
-                <img src={item.image} className="w-20 h-20 object-cover rounded-lg grayscale group-hover:grayscale-0 transition-all" />
+                <img src={item.image} className="w-20 h-20 object-cover rounded-lg grayscale group-hover:grayscale-0 transition-all" alt={item.name} />
                 <div className="flex-1">
                   <h3 className="font-bold text-sm uppercase">{item.name}</h3>
                   <p className="text-neutral-500 text-xs mt-1">${item.price}</p>
@@ -33,8 +44,16 @@ export default function CartDrawer() {
         </div>
 
         <div className="absolute bottom-0 w-full p-6 bg-white border-t border-neutral-100">
-          <button className="w-full bg-black text-white py-4 rounded-full font-bold hover:bg-neutral-800 transition-all">
-            Finalizar Compra
+          <button 
+            onClick={handleCheckout}
+            disabled={cartItems.length === 0}
+            className={`w-full py-4 rounded-full font-bold transition-all uppercase tracking-widest ${
+              cartItems.length === 0 
+                ? 'bg-neutral-100 text-neutral-400 cursor-not-allowed' 
+                : 'bg-black text-white hover:bg-neutral-800 active:scale-95'
+            }`}
+          >
+            Pasar por caja
           </button>
         </div>
       </div>

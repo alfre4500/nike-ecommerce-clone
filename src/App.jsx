@@ -7,8 +7,9 @@ import SearchModal from './components/ui/SearchModal';
 import Home from './pages/Home';
 import ProductDetails from './pages/ProductDetails';
 import Catalog from './pages/Catalog';
-import MensPage from './pages/MensPage'; // Agregado
-import WomensPage from './pages/WomensPage'; // Agregado
+import MensPage from './pages/MensPage'; 
+import WomensPage from './pages/WomensPage'; 
+import Checkout from './pages/Checkout';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/catalogo" element={<Catalog />} />
         <Route path="/hombre" element={<MensPage />} />
         <Route path="/mujer" element={<WomensPage />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </Router>
   );
