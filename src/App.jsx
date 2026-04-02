@@ -6,6 +6,7 @@ import Toast from './components/ui/Toast';
 import SearchModal from './components/ui/SearchModal';
 import Home from './pages/Home';
 import ProductDetails from './pages/ProductDetails';
+import Catalog from './pages/Catalog';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/producto/:id" element={<ProductDetails />} />
+        <Route path="/catalogo" element={<Catalog />} /> {/* 2. AGREGAMOS LA RUTA */}
       </Routes>
     </Router>
   );

@@ -11,10 +11,11 @@ export default function Header() {
     <header className="flex justify-between items-center px-6 md:px-8 py-5 bg-white border-b border-neutral-100 sticky top-0 z-40">
       <Link to="/" className="text-3xl font-black tracking-tighter">NIKE</Link>
       
-      <nav className="hidden md:flex gap-8 text-sm font-medium">
-        <Link to="/" className="hover:text-neutral-500 transition-colors">Nuevos</Link>
-        <a href="#" className="hover:text-neutral-500 transition-colors">Hombre</a>
-        <a href="#" className="hover:text-neutral-500 transition-colors">Mujer</a>
+     <nav className="hidden md:flex gap-8 text-sm font-medium">
+        <Link to="/catalogo" className="hover:text-neutral-500 transition-colors">Nuevos</Link>
+        <Link to="/catalogo" className="hover:text-neutral-500 transition-colors">Hombre</Link>
+        <Link to="/catalogo" className="hover:text-neutral-500 transition-colors">Mujer</Link>
+        <Link to="/catalogo" className="hover:text-neutral-500 transition-colors">Catálogo</Link>
       </nav>
 
       <div className="flex gap-5 items-center">
