@@ -31,14 +31,7 @@ Una experiencia de comercio electrónico de alto rendimiento inspirada en la est
 | **Stripe SDK** | Procesamiento de pagos seguro. |
 | **Lucide React** | Set de iconos vectoriales consistentes. |
 
----
 
-## 📸 Capturas de Pantalla
-
-> **Tip:** Aquí puedes añadir capturas o GIFs de tu proyecto. Te sugiero mostrar:
-> 1. El scroll del catálogo.
-> 2. La animación de entrada de una zapatilla.
-> 3. El checkout con Stripe y el confeti final.
 
 ---
 
