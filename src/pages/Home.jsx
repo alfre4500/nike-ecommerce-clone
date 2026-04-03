@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ShoppingBag, ArrowRight } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Truck, ShieldCheck, RefreshCcw, Mail } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
 import { products } from '../data/products';
 
@@ -17,7 +17,7 @@ export default function Home() {
   const marqueeRef = useRef(null);
 
   useEffect(() => {
-    // 1. Animación del Hero (Entrada)
+    // 1. Animación del Hero
     const tl = gsap.timeline();
     tl.fromTo(heroTextRef.current, 
       { y: 100, opacity: 0 }, 
@@ -34,17 +34,17 @@ export default function Home() {
       "-=0.8"
     );
 
-    // 2. EFECTO DE LEVITACIÓN CONTINUA PARA LA ZAPATILLA PRINCIPAL
+    // 2. Efecto de flotación
     gsap.to(heroImgRef.current, {
       y: -15,
       duration: 2,
       repeat: -1,
       yoyo: true,
       ease: "sine.inOut",
-      delay: 1.2 // Empieza a flotar después de aparecer
+      delay: 1.2
     });
 
-    // 3. ANIMACIÓN DE LA CINTA INFINITA (MARQUEE)
+    // 3. Cinta Infinita (Marquee)
     gsap.to(marqueeRef.current, {
       xPercent: -50,
       ease: "none",
@@ -52,7 +52,7 @@ export default function Home() {
       repeat: -1,
     });
 
-    // 4. Animaciones de Scroll (Aparición en cascada)
+    // 4. Animaciones de Scroll en cascada
     gsap.fromTo(".product-card",
       { y: 50, opacity: 0 },
       {
@@ -74,6 +74,15 @@ export default function Home() {
       {
         y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: "power2.out",
         scrollTrigger: { trigger: "#colecciones", start: "top 85%" }
+      }
+    );
+
+    // 5. Animación para la nueva sección Lifestyle
+    gsap.fromTo(".lifestyle-content",
+      { y: 60, opacity: 0 },
+      {
+        y: 0, opacity: 1, duration: 1, ease: "power3.out",
+        scrollTrigger: { trigger: "#lifestyle-section", start: "top 70%" }
       }
     );
 
@@ -104,9 +113,7 @@ export default function Home() {
         </div>
 
         <div className="md:w-1/2 mt-16 md:mt-0 flex justify-center relative">
-          {/* Círculo decorativo de fondo */}
           <div className="absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-neutral-100 rounded-full -z-10 mix-blend-multiply opacity-50 blur-3xl"></div>
-          
           <img 
             ref={heroImgRef}
             src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
@@ -130,6 +137,29 @@ export default function Home() {
           <span>Descuento para estudiantes</span> <span>•</span>
         </div>
       </div>
+
+      {/* --- FRANJA DE BENEFICIOS --- */}
+      <section className="bg-neutral-50 border-b border-neutral-100">
+        <div className="max-w-7xl mx-auto px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-neutral-200">
+            <div className="flex flex-col items-center gap-3 pt-8 md:pt-0">
+              <Truck size={32} strokeWidth={1.5} />
+              <h3 className="font-bold uppercase tracking-widest text-sm">Envío Gratuito</h3>
+              <p className="text-xs text-neutral-500">En todas las compras superiores a $150</p>
+            </div>
+            <div className="flex flex-col items-center gap-3 pt-8 md:pt-0">
+              <RefreshCcw size={32} strokeWidth={1.5} />
+              <h3 className="font-bold uppercase tracking-widest text-sm">Devoluciones</h3>
+              <p className="text-xs text-neutral-500">Tienes 30 días para devolver tu pedido</p>
+            </div>
+            <div className="flex flex-col items-center gap-3 pt-8 md:pt-0">
+              <ShieldCheck size={32} strokeWidth={1.5} />
+              <h3 className="font-bold uppercase tracking-widest text-sm">Pago Seguro</h3>
+              <p className="text-xs text-neutral-500">Transacciones seguras procesadas con Stripe</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* --- PRODUCTOS DESTACADOS --- */}
       <section className="px-8 py-24 md:px-24 max-w-7xl mx-auto">
@@ -200,6 +230,61 @@ export default function Home() {
               </span>
             </div>
           </Link>
+        </div>
+      </section>
+
+      {/* --- COLECCIONES (Imágenes con altura fija y alineadas) --- */}
+      <section id="colecciones" className="px-8 pb-24 md:px-24 max-w-7xl mx-auto border-t border-neutral-100 pt-24">
+        <h2 className="text-4xl font-black uppercase tracking-tight mb-12 text-center">Líneas Icónicas</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link to="/catalogo" className="collection-card bg-neutral-50 p-8 rounded-[2rem] flex flex-col items-center text-center hover:bg-neutral-100 transition-colors h-full">
+             <h3 className="text-2xl font-black uppercase mb-2">Air Max</h3>
+             <p className="text-sm text-neutral-500 mb-8">La cámara de aire que cambió el juego.</p>
+             {/* Agregamos h-56 object-contain para fijar el tamaño exacto sin deformar */}
+             <img src="https://images.unsplash.com/photo-1605348532760-6753d2c43329?auto=format&fit=crop&w=600&q=80" alt="Air Max" className="w-full h-56 object-contain mix-blend-multiply drop-shadow-xl hover:scale-110 transition-transform duration-500 mt-auto" />
+          </Link>
+          <Link to="/catalogo" className="collection-card bg-neutral-50 p-8 rounded-[2rem] flex flex-col items-center text-center hover:bg-neutral-100 transition-colors mt-0 md:mt-12 h-full">
+             <h3 className="text-2xl font-black uppercase mb-2">Jordan Retro</h3>
+             <p className="text-sm text-neutral-500 mb-8">El legado de la grandeza en la cancha.</p>
+             <img src="https://images.unsplash.com/photo-1608667508764-33cf0726b13a?auto=format&fit=crop&w=600&q=80" alt="Jordan" className="w-full h-56 object-contain mix-blend-multiply drop-shadow-xl hover:scale-110 transition-transform duration-500 mt-auto" />
+          </Link>
+          <Link to="/catalogo" className="collection-card bg-neutral-50 p-8 rounded-[2rem] flex flex-col items-center text-center hover:bg-neutral-100 transition-colors h-full">
+             <h3 className="text-2xl font-black uppercase mb-2">Running</h3>
+             <p className="text-sm text-neutral-500 mb-8">Supera tus límites en cada kilómetro.</p>
+             <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80" alt="Running" className="w-full h-56 object-contain mix-blend-multiply drop-shadow-xl hover:scale-110 transition-transform duration-500 mt-auto" />
+          </Link>
+        </div>
+      </section>
+
+      {/* --- SECCIÓN LIFESTYLE CON EFECTO PARALLAX --- */}
+      {/* Añadido bg-fixed, bg-center y bg-cover para lograr el parallax visual de manera nativa */}
+      <section 
+        id="lifestyle-section" 
+        className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-fixed bg-center bg-cover"
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=1920&q=80')" }}
+      >
+        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="lifestyle-content relative z-10 text-center text-white px-8 max-w-3xl">
+          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">Eleva tu juego</h2>
+          <p className="text-lg md:text-xl text-neutral-300 font-light mb-10 leading-relaxed">
+            No se trata solo del calzado. Se trata de lo que haces con él. Encuentra la equipación perfecta para superar tus propios límites todos los días.
+          </p>
+          <Link to="/catalogo" className="bg-white text-black px-10 py-5 rounded-full font-bold uppercase tracking-widest hover:bg-neutral-200 transition-colors inline-block active:scale-95 shadow-2xl">
+            Descubrir Colección
+          </Link>
+        </div>
+      </section>
+
+      {/* --- NEWSLETTER --- */}
+      <section className="bg-black text-white py-24 px-8 text-center">
+        <div className="max-w-2xl mx-auto space-y-6">
+           <Mail size={48} className="mx-auto mb-6 opacity-80" strokeWidth={1} />
+           <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Únete al Club Nike</h2>
+           <p className="text-neutral-400 font-light text-lg">Recibe noticias, lanzamientos exclusivos y beneficios para tu primera compra.</p>
+           <form className="flex flex-col sm:flex-row gap-4 justify-center mt-8" onSubmit={(e) => e.preventDefault()}>
+             <input type="email" placeholder="Tu correo electrónico" className="px-6 py-4 rounded-full text-black outline-none sm:w-96 focus:ring-2 focus:ring-neutral-500" />
+             <button className="bg-white text-black px-8 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-neutral-200 transition-colors">Suscribirme</button>
+           </form>
         </div>
       </section>
 
