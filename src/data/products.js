@@ -60,7 +60,7 @@ export const products = [
     name: "Nike React Infinity Run", 
     category: "Mujer", 
     price: 160, 
-    image: "https://images.unsplash.com/photo-1584735174965-48c48d7028a9?auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1608667508764-33cf0726b13a?auto=format&fit=crop&w=1000&q=80",
     description: "Diseñado para reducir lesiones y mantenerte en la carrera con más espuma y amortiguación."
   },
   { 
@@ -76,7 +76,7 @@ export const products = [
     name: "Air Jordan 4 Retro", 
     category: "Unisex", 
     price: 210, 
-    image: "https://images.unsplash.com/photo-1597044766741-70dc4a29658b?auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1000&q=80",
     description: "Un ícono del calzado que define la cultura con materiales de lujo y diseño atemporal."
   },
   { 
@@ -108,7 +108,7 @@ export const products = [
     name: "Nike Waffle One Black", 
     category: "Mujer", 
     price: 100, 
-    image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1597248881519-db089d3744a5?auto=format&fit=crop&w=1000&q=80",
     description: "Equilibrando el legado de Nike Running con innovaciones frescas para un look moderno de diario."
   },
   { 
@@ -124,7 +124,7 @@ export const products = [
     name: "Air Jordan 1 Low White", 
     category: "Hombre", 
     price: 110, 
-    image: "https://images.unsplash.com/photo-1600269452121-4f2416755c16?auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=1000&q=80",
     description: "Siempre fresco. El AJ1 Low captura el espíritu del diseño original en un perfil bajo y elegante.",
     isNew: true
   },
@@ -142,7 +142,7 @@ export const products = [
     name: "Nike Air Max Pulse Silver", 
     category: "Hombre", 
     price: 150, 
-    image: "https://images.unsplash.com/photo-1512374382149-433a72b9a5a5?auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1605408499391-6368c628ef42?auto=format&fit=crop&w=1000&q=80",
     description: "La unidad Air con carga de puntos ofrece una comodidad increíble inspirada en la música urbana.",
     isNew: true
   },

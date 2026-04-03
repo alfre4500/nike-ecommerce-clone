@@ -2,8 +2,126 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCartStore } from '../store/useCartStore';
 import confetti from 'canvas-confetti';
-import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Loader2 } from 'lucide-react';
 
+// Importaciones de Stripe
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+
+// Inicializamos Stripe fuera del componente para no recrearlo en cada render.
+// Nota: Aquí debes poner tu CLAVE PÚBLICA (Publishable key) de prueba de Stripe.
+const stripePromise = loadStripe('pk_test_51S2zKjRwcBA4xGNyEYtdDAO65XKgferI6b0GRClTlir2uOK6XtiGkJjXliNXN3AwdUuTJkc66NneBzUumjaDA6jE00lrCuMsDe');
+
+// Componente interno del Formulario para poder usar los hooks de Stripe
+const CheckoutForm = ({ total, onSuccess }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!stripe || !elements) {
+      return; // Stripe aún no ha cargado
+    }
+
+    setIsProcessing(true);
+    setErrorMessage('');
+
+    const cardElement = elements.getElement(CardElement);
+
+    // Simulamos la creación del método de pago con Stripe
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+      billing_details: {
+        name: e.target.name.value,
+        email: e.target.email.value,
+      },
+    });
+
+    if (error) {
+      setErrorMessage(error.message);
+      setIsProcessing(false);
+    } else {
+      // Si todo sale bien, simulamos un pequeño delay de red antes de mostrar el éxito
+      console.log('Pago exitoso, ID:', paymentMethod.id);
+      setTimeout(() => {
+        setIsProcessing(false);
+        onSuccess();
+      }, 1000);
+    }
+  };
+
+  // Estilos personalizados para que el input de Stripe haga match con tu diseño
+  const cardElementOptions = {
+    style: {
+      base: {
+        fontSize: '16px',
+        color: '#000',
+        fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+        '::placeholder': { color: '#a3a3a3' },
+        iconColor: '#000',
+      },
+      invalid: {
+        color: '#ef4444',
+        iconColor: '#ef4444',
+      },
+    },
+    hidePostalCode: true,
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex flex-col gap-2">
+          <label className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Nombre</label>
+          <input required name="name" type="text" placeholder="Tu nombre" className="border-b-2 border-neutral-100 py-3 focus:border-black outline-none transition-colors" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Apellido</label>
+          <input required name="lastName" type="text" placeholder="Tu apellido" className="border-b-2 border-neutral-100 py-3 focus:border-black outline-none transition-colors" />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Correo Electrónico</label>
+        <input required name="email" type="email" placeholder="email@ejemplo.com" className="border-b-2 border-neutral-100 py-3 focus:border-black outline-none transition-colors" />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Dirección de Envío</label>
+        <input required name="address" type="text" placeholder="Calle y número" className="border-b-2 border-neutral-100 py-3 focus:border-black outline-none transition-colors" />
+      </div>
+
+      <div className="pt-10">
+        <h3 className="font-black uppercase text-sm mb-6">Datos de Tarjeta</h3>
+        {/* Contenedor del input de Stripe */}
+        <div className="p-4 border-b-2 border-neutral-100 focus-within:border-black transition-colors">
+          <CardElement options={cardElementOptions} />
+        </div>
+        {errorMessage && <p className="text-red-500 text-xs mt-2 font-medium">{errorMessage}</p>}
+      </div>
+
+      <button 
+        type="submit" 
+        disabled={!stripe || isProcessing}
+        className="w-full bg-black text-white py-5 rounded-full font-black uppercase tracking-widest mt-10 hover:bg-neutral-800 transition-colors active:scale-[0.98] disabled:bg-neutral-400 flex justify-center items-center gap-2"
+      >
+        {isProcessing ? (
+          <>
+            <Loader2 className="animate-spin" size={20} /> Procesando...
+          </>
+        ) : (
+          `Realizar Pedido — $${total.toFixed(2)}`
+        )}
+      </button>
+    </form>
+  );
+};
+
+// Componente Principal
 export default function Checkout() {
   const { cartItems, clearCart } = useCartStore();
   const navigate = useNavigate();
@@ -13,10 +131,7 @@ export default function Checkout() {
   const envio = 15;
   const total = subtotal + envio;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Lanzar confeti
+  const handlePaymentSuccess = () => {
     confetti({
       particleCount: 150,
       spread: 70,
@@ -26,7 +141,6 @@ export default function Checkout() {
 
     setIsFinished(true);
     
-    // Limpiamos el carrito después de un momento
     setTimeout(() => {
       clearCart();
     }, 1000);
@@ -62,46 +176,10 @@ export default function Checkout() {
           
           <h1 className="text-4xl font-black uppercase tracking-tighter mb-10">Finalizar Compra</h1>
           
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex flex-col gap-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Nombre</label>
-                <input required type="text" placeholder="Tu nombre" className="border-b-2 border-neutral-100 py-3 focus:border-black outline-none transition-colors" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Apellido</label>
-                <input required type="text" placeholder="Tu apellido" className="border-b-2 border-neutral-100 py-3 focus:border-black outline-none transition-colors" />
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Correo Electrónico</label>
-              <input required type="email" placeholder="email@ejemplo.com" className="border-b-2 border-neutral-100 py-3 focus:border-black outline-none transition-colors" />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Dirección de Envío</label>
-              <input required type="text" placeholder="Calle y número" className="border-b-2 border-neutral-100 py-3 focus:border-black outline-none transition-colors" />
-            </div>
-
-            <div className="pt-10">
-              <h3 className="font-black uppercase text-sm mb-6">Método de Pago</h3>
-              <div className="p-6 border-2 border-black rounded-2xl flex justify-between items-center">
-                <span className="font-bold">Tarjeta de Crédito / Débito</span>
-                <div className="flex gap-2">
-                  <div className="w-8 h-5 bg-neutral-200 rounded"></div>
-                  <div className="w-8 h-5 bg-neutral-200 rounded"></div>
-                </div>
-              </div>
-            </div>
-
-            <button 
-              type="submit" 
-              className="w-full bg-black text-white py-5 rounded-full font-black uppercase tracking-widest mt-10 hover:bg-neutral-800 transition-colors active:scale-[0.98]"
-            >
-              Realizar Pedido — ${total.toFixed(2)}
-            </button>
-          </form>
+          {/* Envolvemos nuestro formulario en el Provider de Stripe */}
+          <Elements stripe={stripePromise}>
+            <CheckoutForm total={total} onSuccess={handlePaymentSuccess} />
+          </Elements>
         </div>
 
         {/* RESUMEN */}
