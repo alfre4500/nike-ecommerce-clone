@@ -5,12 +5,11 @@ import { ShoppingBag, ChevronDown } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
 import { products } from '../data/products';
 import ProductSkeleton from '../components/ui/ProductSkeleton';
-import SafeImage from '../components/ui/SafeImage'; // 1. IMPORTAMOS EL NUEVO COMPONENTE
+import SafeImage from '../components/ui/SafeImage';
 
 export default function Catalog() {
   const [searchParams, setSearchParams] = useSearchParams();
   
-  // 2. LEEMOS AMBOS PARÁMETROS DE LA URL
   const filterFromUrl = searchParams.get('filter') || 'Todos';
   const sortFromUrl = searchParams.get('sort') || 'Relevancia';
 
@@ -23,22 +22,23 @@ export default function Catalog() {
 
   const filters = ['Todos', 'Nuevos', 'Hombre', 'Mujer', 'Unisex'];
 
-  // 3. FUNCIÓN PARA ACTUALIZAR LA URL CON AMBOS VALORES
   const updateUrlParams = (newFilter, newSort) => {
     setSearchParams({ filter: newFilter, sort: newSort });
   };
 
+  // 1. SOLUCIÓN AL WARNING DE REACT: Iniciamos la carga al hacer clic
   const handleFilterChange = (newFilter) => {
+    setIsLoading(true);
     setActiveFilter(newFilter);
     updateUrlParams(newFilter, sortBy);
   };
 
   const handleSortChange = (newSort) => {
+    setIsLoading(true);
     setSortBy(newSort);
     updateUrlParams(activeFilter, newSort);
   };
 
-  // Lógica de filtrado y orden
   const filteredProducts = products
     .filter(product => {
       if (activeFilter === 'Todos') return true;
@@ -53,7 +53,7 @@ export default function Catalog() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setIsLoading(true);
+    // Ya no hacemos setIsLoading(true) aquí para evitar el renderizado en bucle
     const timer = setTimeout(() => setIsLoading(false), 1000);
     return () => clearTimeout(timer);
   }, [activeFilter, sortBy]);
@@ -70,14 +70,14 @@ export default function Catalog() {
   return (
     <div className="min-h-screen bg-white text-neutral-900 font-sans pb-24">
       
-      <div className="pt-32 px-8 md:px-12 max-w-[1600px] mx-auto">
+      {/* 2. SOLUCIÓN TAILWIND: Cambiamos max-w-[1600px] por max-w-screen-2xl */}
+      <div className="pt-32 px-8 md:px-12 max-w-screen-2xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-baseline mb-8 border-b border-neutral-100 pb-6">
           <h1 className="text-3xl font-black uppercase tracking-tighter" aria-live="polite">
             {activeFilter === 'Todos' ? 'Todos los Productos' : `${activeFilter}`} ({filteredProducts.length})
           </h1>
           
           <div className="flex gap-8 mt-4 md:mt-0">
-            {/* ACCESIBILIDAD: Se agregó role y tabIndex para navegación por teclado */}
             <div className="relative group cursor-pointer flex items-center gap-2 font-bold text-sm" tabIndex="0" role="button" aria-haspopup="true">
               <span>Ordenar por: {sortBy}</span>
               <ChevronDown size={16} />
@@ -86,7 +86,7 @@ export default function Catalog() {
                 {['Relevancia', 'Precio: Menor a Mayor', 'Precio: Mayor a Menor'].map(option => (
                   <button 
                     key={option}
-                    onClick={() => handleSortChange(option)} // USAMOS LA NUEVA FUNCIÓN AQUÍ
+                    onClick={() => handleSortChange(option)}
                     className="w-full text-left px-4 py-2 hover:bg-neutral-50 rounded-md text-xs font-bold uppercase"
                   >
                     {option}
@@ -99,7 +99,8 @@ export default function Catalog() {
 
         <div className="flex flex-col md:flex-row gap-12">
           
-          <aside className="hidden md:block w-64 flex-shrink-0 sticky top-32 h-fit">
+          {/* 3. SOLUCIÓN TAILWIND: Cambiamos flex-shrink-0 por shrink-0 */}
+          <aside className="hidden md:block w-64 shrink-0 sticky top-32 h-fit">
             <div className="space-y-8">
               <div>
                 <h3 className="font-bold uppercase text-xs tracking-widest mb-6">Categorías</h3>
@@ -143,7 +144,6 @@ export default function Catalog() {
                         </span>
                       )}
                       
-                      {/* 4. REEMPLAZAMOS <img> POR <SafeImage /> */}
                       <SafeImage 
                         src={product.image} 
                         alt={`Fotografía de ${product.name}`} 
@@ -156,7 +156,7 @@ export default function Catalog() {
                         addToCart({ ...product, selectedSize: 'US 9' });
                         showToast("Agregado al carrito", "success");
                       }}
-                      aria-label={`Agregar ${product.name} al carrito rápidamente`} // ACCESIBILIDAD MEJORADA
+                      aria-label={`Agregar ${product.name} al carrito rápidamente`}
                       className="absolute bottom-4 right-4 bg-black text-white w-12 h-12 rounded-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-neutral-800 shadow-xl"
                     >
                       <ShoppingBag size={20} aria-hidden="true" />
